@@ -317,7 +317,7 @@ FOR i IN REVERSE 10..1 LOOP
 END LOOP;
 
 -- 2. 游标查询遍历循环 (自动隐式管理游标打开与关闭)
-FOR v_rec IN 
+FOR v_rec IN
     SELECT id, user_name, email 
     FROM users 
     WHERE created_at < current_date - interval '1 year'
@@ -403,6 +403,7 @@ $$;
 > [!WARNING]
 > **异常处理的底层代价（Subtransaction Overhead）**：
 > 在 PL/pgSQL 中，**每个包含 `EXCEPTION` 块的代码段，在进入时都会在内核中隐式创建一个内部子事务保存点（Savepoint / Subtransaction）**。
+>
 > - 在高并发高频调用（如每秒几万次）的场景下，频繁创建/销毁 Subtransaction 会造成巨大的 WAL 记录开销与 `pg_subtrans` 锁竞争。
 > - **生产建议**：仅在真正需要捕获无法预判的异常时才使用 `EXCEPTION`；常规业务逻辑应优先使用 `IF FOUND`、`IF EXISTS` 等条件判断进行逻辑分流。
 

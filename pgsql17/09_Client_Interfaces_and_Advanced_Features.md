@@ -26,13 +26,13 @@ PostgreSQL 采用**多进程模型**（Multi-Process）：
 
 ```mermaid
 graph TD
-    Client1[App Pod 1] --> Pool[PgBouncer / HikariCP 连接池]
-    Client2[App Pod 2] --> Pool
-    Client3[App Pod 3] --> Pool
-    Pool -->|维持 30~60 优质长连接| PG[PostgreSQL Master 进程]
-    PG --> Worker1[Backend Process 1]
-    PG --> Worker2[Backend Process 2]
-    Worker1 --> SharedMem[Shared Buffers 共享内存]
+    Client1["App Pod 1"] --> Pool["PgBouncer / HikariCP 连接池"]
+    Client2["App Pod 2"] --> Pool
+    Client3["App Pod 3"] --> Pool
+    Pool -->|"维持 30~60 优质长连接"| PG["PostgreSQL Master 进程"]
+    PG --> Worker1["Backend Process 1"]
+    PG --> Worker2["Backend Process 2"]
+    Worker1 --> SharedMem["Shared Buffers 共享内存"]
     Worker2 --> SharedMem
 ```
 
